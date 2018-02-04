@@ -70,10 +70,19 @@ void parse_args(int argc, char* argv[])
 		if(strcmp(argv[i], "-v") == 0 ||
 		   strcmp(argv[i], "version") == 0)
 		{
-			if(strcmp(GIT_BRANCH, "master") == 0)
+			const char * commit = GIT_HASH;
+			const char * tag = GIT_TAG;
+			if(strlen(tag) > 1)
+			{
 				printf("%s\n",GIT_VERSION);
+			}
 			else
-				printf("vDev-%s\n",GIT_HASH);
+			{
+				char hash[8];
+				// Extract first 7 characters of the hash
+				strncpy(hash, commit, 7); hash[7] = 0;
+				printf("vDev-%s\n", hash);
+			}
 			exit(EXIT_SUCCESS);
 		}
 
@@ -113,14 +122,14 @@ void parse_args(int argc, char* argv[])
 		{
 			travis = true;
 			FTLfiles.log = "pihole-FTL.log";
-			FTLfiles.db = "pihole-FTL.db";
+			// FTLfiles.db will be set to "pihole-FTL.db" via config file on Travis
+			FTLfiles.conf = "pihole-FTL.conf";
 			files.log = "pihole.log";
 			ok = true;
 		}
 
 		// List of implemented arguments
-		if(strcmp(argv[i], "-h") == 0 ||
-		   strcmp(argv[i], "help") == 0)
+		if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "help") == 0 || strcmp(argv[i], "--help") == 0)
 		{
 			printf("pihole-FTL - The Pi-hole FTL engine\n\n");
 			printf("Usage:    sudo service pihole-FTL <action>\n");

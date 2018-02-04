@@ -336,9 +336,10 @@ void process_pihole_log(int file)
 			char *domainwithspaces = calloc(domainlen+3,sizeof(char));
 			// strncat() NULL-terminates the copied string (strncpy() doesn't!)
 			strncat(domain,domainstart+2,domainlen);
+			// Copy string into buffer surrounded by spaces
+			sprintf(domainwithspaces," %s ",domain);
 			// Convert domain to lower case
 			strtolower(domain);
-			sprintf(domainwithspaces," %s ",domain);
 
 			if(strcmp(domain, "pi.hole") == 0)
 			{
@@ -526,8 +527,6 @@ void process_pihole_log(int file)
 				// Debug output
 				if(strlen(hostname) > 0)
 				{
-					// Convert hostname to lower case
-					strtolower(hostname);
 					logg("New client: %s %s (%i/%i)", client, hostname, clientID, counters.clients_MAX);
 				}
 				else
@@ -792,6 +791,8 @@ char *resolveHostname(const char *addr)
 	{
 		// Return hostname copied to new memory location
 		hostname = strdup(he->h_name);
+		// Convert hostname to lower case
+		strtolower(hostname);
 	}
 
 	return hostname;
