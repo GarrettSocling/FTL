@@ -6,8 +6,11 @@
 *  Global definitions
 *
 *  This file is copyright under the latest version of the EUPL.
-*  Please see LICENSE file for your rights under this license. */
+*  Please see LICENSE file for your rights under this license. 
 
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  a #define string creates a new variable
+*  an #include <library.h> takes the code in .h file and puts it in front of the code you see here  */
 #define __USE_XOPEN
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -20,6 +23,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+// time is a classic .h file, it allows you to pull all kinds of useful information from the OS
+// https://www.tutorialspoint.com/c_standard_library/time_h.htm
 #include <time.h>
 #include <sys/time.h>
 #include <sys/socket.h>
@@ -40,7 +45,7 @@
 #include "sqlite3.h"
 // tolower()
 #include <ctype.h>
-
+// text
 #include "routines.h"
 
 // Next we define the step size in which the struct arrays are reallocated if they
@@ -51,7 +56,7 @@
 #define CLIENTSALLOCSTEP 10
 #define DOMAINSALLOCSTEP 1000
 #define OVERTIMEALLOCSTEP 100
-
+//
 #define SOCKETBUFFERLEN 1024
 
 // Maximum time from now until we will parse logs that are in the past [seconds]
@@ -67,14 +72,17 @@
 #define GCdelay (-60)
 
 // Static structs
+//
 typedef struct {
 	const char* conf;
 	const char* log;
 	const char* pid;
 	const char* port;
 	char* db;
+//
 } FTLFileNamesStruct;
 
+//
 typedef struct {
 	const char* log;
 	const char* log1;
@@ -87,6 +95,7 @@ typedef struct {
 	const char* dnsmasqconfig;
 } logFileNamesStruct;
 
+//
 typedef struct {
 	int queries;
 	int invalidqueries;
@@ -112,6 +121,7 @@ typedef struct {
 	int forwardedqueries;
 } countersStruct;
 
+//
 typedef struct {
 	bool socket_listenlocal;
 	bool include_yesterday;
@@ -125,6 +135,7 @@ typedef struct {
 } ConfigStruct;
 
 // Dynamic structs
+//
 typedef struct {
 	unsigned char magic;
 	int timestamp;
@@ -139,6 +150,7 @@ typedef struct {
 	bool db;
 } queriesDataStruct;
 
+//
 typedef struct {
 	unsigned char magic;
 	int count;
@@ -146,6 +158,7 @@ typedef struct {
 	char *name;
 } forwardedDataStruct;
 
+//
 typedef struct {
 	unsigned char magic;
 	int count;
@@ -153,6 +166,7 @@ typedef struct {
 	char *name;
 } clientsDataStruct;
 
+//
 typedef struct {
 	unsigned char magic;
 	int count;
@@ -161,6 +175,7 @@ typedef struct {
 	bool wildcard;
 } domainsDataStruct;
 
+//
 typedef struct {
 	unsigned char magic;
 	int timestamp;
@@ -174,6 +189,7 @@ typedef struct {
 	int *clientdata;
 } overTimeDataStruct;
 
+//
 typedef struct {
 	int wildcarddomains;
 	int domainnames;
@@ -186,26 +202,32 @@ typedef struct {
 	int querytypedata;
 } memoryStruct;
 
+//
 enum { QUERIES, FORWARDED, CLIENTS, DOMAINS, OVERTIME, WILDCARD };
 enum { SOCKET };
 
+//
 logFileNamesStruct files;
 FTLFileNamesStruct FTLfiles;
 countersStruct counters;
 ConfigStruct config;
 
+//
 queriesDataStruct *queries;
 forwardedDataStruct *forwarded;
 clientsDataStruct *clients;
 domainsDataStruct *domains;
 overTimeDataStruct *overTime;
 
+//
 FILE *logfile;
 volatile sig_atomic_t killed;
 
+//
 char ** setupVarsArray;
 int setupVarsElements;
 
+//
 bool initialscan;
 bool debug;
 bool debugthreads;
@@ -216,11 +238,14 @@ bool threadwritelock;
 bool threadreadlock;
 unsigned char blockingstatus;
 
+//
 char ** wildcarddomains;
 
+//
 memoryStruct memory;
 bool runtest;
 
+//
 char * username;
 char timestamp[16];
 bool flush;
